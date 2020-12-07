@@ -1,3 +1,6 @@
+
+StringToIntegerList := 
+
 # Fast Exponentiation (2.1.16)
 fex := function( a, n, m )
   local p0, n0, a0;
@@ -7,7 +10,7 @@ fex := function( a, n, m )
   while n0 > 0 do
     if (n0 mod 2 = 1) then
       p0 := p0*a0 mod m;
-	fi;
+    fi;
     a0 := a0*a0 mod m;
     n0 := Int( Floor( Float( n0/2) ) );
   od;

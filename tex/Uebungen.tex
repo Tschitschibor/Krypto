@@ -1,0 +1,60 @@
+\documentclass[a4paper,12pt,twoside]{article}
+
+\usepackage[ 
+  a4paper,
+  footskip=0.7cm,
+  margin=2.7cm,
+  top=1.1cm,
+  bottom=1.4cm
+]{geometry}
+
+\usepackage[german]{babel}
+
+%%% Math theorem styles
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsbsy}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{esvect}
+\usepackage{commath}
+\usepackage[sc,osf]{mathpazo}
+
+\theoremstyle{definition}
+\newtheorem{satz}{Satz}[subsection]
+\newtheorem{lemma}[satz]{Lemma}
+\newtheorem{korollar}[satz]{Korollar}
+\newtheorem{definition}[satz]{Definition}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{berechnung}[satz]{Berechnung}
+
+
+
+\begin{document}
+
+\section{Übung 1}
+\section{Übung 2}
+\section{Übung 3}
+\section{Übung 4}
+\section{Übung 5}
+\newpage
+\section{Übung 6}
+\subsection{Aufgabe 1}
+\subsection{Aufgabe 2}
+\subsection{Aufgabe 3}
+\subsection{Aufgabe 4}
+Siehe \texttt{Krypto/gap/ElGamal.g}
+\subsection{Aufgabe 5}
+
+\begin{satz}
+Sei $G$ eine endliche Gruppe und $U \leq G$ eine Untergruppe von $G$. Dann ist $\abs{U}$ ein Teiler von $\abs{G}$.
+\end{satz}
+\begin{proof}
+Sei $g \in G$. Dann gilt für die Menge $gU := \{gu\,|\,u \in U \}$.
+\end{proof}
+
+\subsection{Aufgabe 6}
+
+\end{document}
