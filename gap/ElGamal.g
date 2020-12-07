@@ -1,5 +1,9 @@
 
-StringToIntegerList := 
+StringToIntegerList := function( s )
+local L;
+L := [ 1, 2, 3 ];
+return L;
+end;
 
 # Fast Exponentiation (2.1.16)
 fex := function( a, n, m )
