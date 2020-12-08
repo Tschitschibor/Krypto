@@ -1,0 +1,20 @@
+Siehe \texttt{Krypto/gap/ElGamal.g}.
+
+Zuerst habe ich den Algorithmus zur schnellen Exponentiation names \texttt{fex} geschrieben. Dann habe ich
+den Miller-Rabin-Test implementiert, einmal als Primzahl-Test \texttt{MillerRabinTest, MRT} mit Eingaben $n, k$
+wobei $k$ die Anzahl der Wiederholungen des Tests ist, und einmal als Primzahl-Generator \texttt{MillerRabinGenerator, MRG}
+mit Eingaben \texttt{low, high} das Intervall, in dem nach einer Primzahl gesucht werden soll, und $k$ erneut wie oben.
+
+Mit diesen Hilfsmitteln habe ich dann das Programm \texttt{ElGamal} geschrieben, das zu einer Eingabe $n \in \mathbb{N}$
+ein Schlüssel-Paar \texttt{key.public} und \texttt{key.private} (als gap-Records) erzeugt, wobei $\mathtt{key.public} = (p, a, z)$ und 
+$\mathtt{key.private} = k$ wobei für die Primzahl $p$ gilt $p \geq n$, und für den geheimen Schlüssel $k$ gilt $k \geq \frac{1}{2}n$.
+
+Der Algorithmus geht nach dem in (2.2.3) Beschriebenen vor mit $f = 2$, d.h. anstatt Primzahl $p$ und Primitivwurzel $a$ getrennt zu wählen,
+wird ein Paar $(m, a)$ bestimmt, für das $m$ eine Primzahl und $a$ eine Primitivwurzel modulo $m$ ist. Hierbei wird für die
+erstmalige Primzahl $q$ das Suchintervall $[n, 2n]$ nach Betrand bestimmt, und die Wiederholungen bei $10$. Ebenso wird $m$ mit
+$10$ Wiederholungen auf Primzahl getestet.
+
+Sobald man das Paar $(p, a)$ hat, wird ein zufälliger geheimer Schlüssel $k \geq \frac{n}{2}$ gebildet.
+Anschließend wird noch das für den öffentlichen Schlüssel fehlende $z = a^{k} \mod p$ berechnet, wobei wiederum
+die Schnelle Exponentiation zum Einsatz kommt.
+Damit ist auch der öffentliche Schlüssel $\mathtt{key.public} = (p, a, z)$ bestimmt, und beide werden zusammen ausgegeben.

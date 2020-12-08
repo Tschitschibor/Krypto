@@ -1,0 +1,14 @@
+Siehe \texttt{Krypto/gap/EllipticCurve.g}.
+
+Zunächst habe ich eine Funktion \texttt{defines_ellipse} geschrieben, die bei Eingabe von $a_{4}, a_{6}$ und dem Körper $F$ überprüft,
+ob durch $E_{0}(a_{4}, a_,{6}, F)$ eine elliptische Kurve i.S.v. (2.3.10) definiert ist, wobei die Existenz des neutralen Elements ignoriert wird,
+also nur die Eigenschaften in (2.3.6) überprüft werden, d.h.
+\begin{align}
+F \,\text{ist ein Körper}\\
+\mathrm{Char}\,F \neq 2 \\
+\mathrm{Char}\,F \neq 3 \\
+4a_{4}^{3} + 27a_{6}^{2} \neq 0 
+\end{align}
+wobei die letzte Gleichung über $K$ gesehen werden sollte.
+
+Für die endlichen Körper benutze ich das Paket \texttt{GaussForHomalg} vom homalg_project (\url{https://github.com/homalg-project/homalg_project}).

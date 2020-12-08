@@ -1,3 +1,11 @@
+defines_ellipse := function( a4, a6, F )
+  return IsField( F ) and
+    Characteristic( F ) <> 2 and
+    Characteristic( F ) <> 3 and
+	One( F )*( 4*a4^3 + 27*a6^2 ) <> One( F )*0;
+end;
+
+
 EllipticCurve := function( a4, a6, F )
 local a4s, a6s, ellipse_membership, ellipse_points, 
 ellipse;
@@ -8,12 +16,6 @@ if 4*a4s^3 + 27*a6s^2 = 0 then
   Error("Inputs don't define an elliptic curve.\n");
 fi;
 
-defines_ellipse := function( a4, a6, F )
-  return IsField( F ) and
-    Characteristic( F ) <> 2 and
-    Characteristic( F ) <> 3 and
-	One( F )*( 4*a4^3 + 27*a6^2 ) <> One( F )*0;
-end;
 
 ellipse_membership := function( xy, a4, a6, F )
   local a4s, a6s, x, y;

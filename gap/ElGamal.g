@@ -6,6 +6,8 @@ return L;
 end;
 
 # Fast Exponentiation (2.1.16)
+# (to be used in place of gap's internal a^n mod m routine)
+# (relies on gap's internal a*b mod m routine)
 fex := function( a, n, m )
   local p0, n0, a0;
   p0 := 1;
@@ -78,11 +80,10 @@ local rndsource, MR, n, d, s, a, x, i, j;
 #rndsource := RandomSource( IsMersenneTwister, 584 );;
 MR := false;
 repeat
-
-repeat
+ repeat
   #n := Random( rndsource, low, high );
   n := Random( low, high );
-until n mod 2 = 1;
+ until n mod 2 = 1;
 ## n is odd.
 #
 ## s, d such that:
