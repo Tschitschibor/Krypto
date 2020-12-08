@@ -1,0 +1,40 @@
+\begin{itemize}
+\item öffentlicher Schlüssel: $(n, e) = (299, 79)$.
+\item geheimer Schlüsel: $d = 127$.
+\end{itemize}
+\begin{align*}
+ed - 1 &= 79\times127 - 1 \\
+&= 10033 - 1 \\
+&= 10032 \\
+&= 2^{s}\times t \\
+&= 2^{4}\times 627
+\end{align*}
+Also $s = 4$ und $t = 627$. Für (2.1.26) müssen wir dann ein $a \in \{1,\dots,n-1\}$ finden mit
+\begin{subequations}
+\begin{align}
+\mathrm{ggT}(a, n) &=\label{teilerfremd} 1 \\
+\mathrm{ord}[a^{t}]_{p} &\neq\label{p-q-ordnung} \mathrm{ord}[a^{t}]_{q}
+\end{align}
+\end{subequations}
+wobei wir $p$ und $q$ ja gerade noch nicht kennen. Wir ignorieren also die zweite Bedingung \eqref{p-q-ordnung} und gehen probabilistisch vor,
+d.h. wir wählen ein zufälliges $a \in \{1,\dots,n-1\}$, welches \eqref{teilerfremd} erfüllt.
+Mit den so bestimmten Variablen und einem $i \in \{0,\dots,s-1\} = \{0,1,2,3\}$
+haben wir also $a, i, t, n$ sodass
+\begin{align}
+\mathrm{ggT}(a^{2^{i}t} - 1, n) \in \{p,q\}.
+\end{align}
+
+Zum Beispiel für $a = 224$, welches $\mathrm{ggT}(a,n) = 1$ erfüllt, ergibt sich
+\begin{align*}
+i = 0: \mathrm{ggT}(224^{2^{0}\times627} - 1, 299 ) = 13
+\end{align*}
+Also haben wir 13 als Teiler von 299 erkannt, und tatsächlich ist $299 / 13 = 23$.
+
+Als Beispiel, dass auch $i > 0$ nötig sein kann, z.B. $a = 44$, dann ergibt sich
+\begin{alignat*}{3}
+i &= 0: \mathrm{ggT}(44^{2^{0}\times627} - 1, 299 ) &&= 1 \\
+i &= 1: \mathrm{ggT}(44^{2^{1}\times627} - 1, 299 ) &&= 23
+\end{alignat*}
+
+Als Algorithmus nach (2.1.28) habe ich \texttt{Krypto/gap/RSAFactoring.g} geschrieben, dem man $n, e, d$ übergibt (der also bereits annimmt, dass man
+$d$ aus $n$ und $e$ effizient errechnet hat) und der daraus einen Faktor von $n$ bestimmt.
