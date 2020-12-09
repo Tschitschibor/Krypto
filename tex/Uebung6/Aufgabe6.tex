@@ -142,18 +142,120 @@ Wie man am Graph der Kurve
 \begin{align*}
 y^2 = x^{3} - 43x + 166,
 \end{align*}
-sehen kann, ist der äußerst linke Punkt derjenige, an dem $y = 0$ gilt, dann gilt also
+sehen kann, ist der äußerst linke Punkt derjenige, an dem $y = 0$ gilt und der eine Tangente parallel zur $y$-Achse hat.
+Da es sich nicht um unseren Punkt $P = (3, 8)$ handelt, können wir also $P + P = O$ ausschließen, d.h. $P$ ist nicht von Ordnung 2.
+
+Wir müssen also die Tangente an $E_{0}$ im Punkt $P = (3, 8)$ berechnen. Da sich der Punkt in der oberen Hälfte des Graphes befindet,
+können wir $y > 0$ annehmen, und damit den Graph nach $y = f(x)$ auflösen:
+\begin{alignat*}{3}
+y &= f(x) &= \sqrt{x^{3} - 43x + 166} &= (x^{3} - 43x + 166)^{1/2}
+\end{alignat*}
+Für die Tangente bilden wir also die Ableitung von $f$:
+\begin{alignat*}{2}
+f'(x) &= (3x^{2} - 43)\cdot \frac{1}{2} \cdot (x^{3} - 43x + 166)^{-1/2} \\
+&= \frac{1}{2} \cdot \frac{3x^{2}-43}{\sqrt{x^{3}-43x+166}}
+\end{alignat*}
+Die Tangente hat also im Punkt $P = (3,8)$ die Steigung $f'(3) = -1$. Damit können wir die Tangentenfunktion
+$t_{P}(x)$ zur Geraden $L(P,P,\mathbb{R})$ bestimmen:
 \begin{align*}
-0 &= x^{3} - 43x + 166 \\
-\Rightarrow x &\cong -7.9865
+t_{P}(x) &= ax + b \\
+t_{P}(3) &= 8 \\
+t'_{P}(x) &= a = f'(3) = -1 \\
+t_{P}(x) &= -x + b \\
+8 &= -3 + b \\
+b &= 11 \\
+t_{P}(x) &= -x + 11
+\end{align*}
+Nun haben wir mit $P$ einen doppelten Schnittpunkt an $E_{0}$ und suchen den dritten Schnittpunkt $R \in L(P,P,\mathbb{R}) \cap E_{0}$,
+also setzen wir beide Funktionen gleich und lösen nach $x$ und $y$ auf:
+\begin{align*}
+t_{P}(x) &= f(x) \\
+-x + 11 &= \sqrt{x^{3} - 43x + 166} \\
+(11 - x)^{2} &= x^{3} - 43x + 166 \\
+121 - 22x + x^{2} &= x^{3} -43x + 166 \\
+x^{3} - x^{2} - 21x + 45 &= 0 \\
+(x^{3} - x^{2} - 21x + 45) : (x - 3) &= x^{2} + 2x - 15 \\
+(x+5)(x-3)(x-3) &= 0 \\
+\end{align*}
+also $R = (-5, f(-5)) = (-5, 16)$.
+Damit haben wir also $P\ast P$ nach (2.3.10) berechnet. Für die Gruppenoperation auf $E_{0}$ müssen wir dann nur noch berechnen
+\begin{align*}
+P + P &= 0 \ast (P \ast P) \\
+&= 0 \ast R \\
+&= 0 \ast (-5, 16) \\
+&= (-5, -16)
+\end{align*}
+Es muss also nur noch das Vorzeichen vom $y$-Wert vertauscht werden. Wir halten also fest, $P + P = 2P = (-5, -16)$.
+Nun sollte die Verbindungsline zwischen $P$ und $nP$ in den meisten Fällen keine Tangente an $E_{0}$ mehr sein, sondern eine Sekante.
+Wir berechnen also der Reihe nach $3P = P + 2P, 4P = P + 3P,\dots$ bis wir für ein $n \in \mathbb{N}$ haben $nP = 0$.
+
+\begin{align*}
+L(P,Q,\mathbb{R}) &= \{(1-s)P + sQ \,|\,s \in \mathbb{R}\} \\
+(x,y) &\in L(P,Q,\mathbb{R}) \\
+\Leftrightarrow x &= (1-s)P_{x} + sQ_{x} \\
+y &= (1-s)P_{y} + sQ_{y} \\
+\end{align*}
+Das ergibt für $L(P, 2P, \mathbb{R})$:
+\begin{align*}
+x &= (1-s)3 + s(-5) \\
+y &= (1-s)8 + s(-16) \\
+x(s) &= 3 -8s \\
+y(s) &= 8 - 24s \\
+s(x) &= (x-3)/(-8) \\
+y(x) &= 8 - 24(s(x)) \\
+&= 8 - 24( (x-3)/(-8) ) \\
+&= 8 + 3(x-3) \\
+&= 3x - 1
 \end{align*}
 
-Wir müssen also die Tangente an $E_{0}$ im Punkt $P = (x, y)$ berechnen.
-
-Für unseren Punkt $P = (3, 8)$ hingegen gilt:
+Also wieder gleichsetzen
 \begin{align*}
-P + P = 
+(3x - 1)^{2} = x^{3} - 43x + 166 \\
+9x^{2} - 6x + 1 = x^{3} - 43x + 166 \\
+x^{3} - 9x^{2} - 37x +165 = 0
 \end{align*}
+Und wir kennen bereits zwei Lösungen $P_{x} = 3$ und $(2P)_{x} = -5$, wir können also dividieren:
+\begin{align*}
+(x^{3} - 9x^{2} - 37x + 165):((x-3)(x+5)) = (x^{2} - 6x - 55):(x+5) = (x-11)
+\end{align*}
+Der dritte Punkt ist also $R = (11, f(11)) = (11, 32)$. Einmal noch das Vorzeichen vom $y$-Wert tauschen erhalten wir $3P = (11, -32)$.
+
+Wieder die Gerade durch $P$ und $3P$:
+\begin{align*}
+x &= (1-s)3 + s(11) \\
+&= 3 + 8s \\
+s(x) &= (x-3)/8 \\
+y &= (1-s)8 + s(-32) \\
+y(x) &= 8 - 40( s(x) ) \\
+&= 8 - 40( (x-3)/8 ) \\
+&= 8 - 5x + 15 \\
+&= -5x + 23
+\end{align*}
+
+Wieder gleichsetzen:
+\begin{align*}
+(-5x + 23)^{2} &= x^{3} - 43x + 166 \\
+25x^{2} - 230x + 529 &= x^{3} - 43x + 166 \\
+x^{3} - 25x^{2} + 187x - 363 &= 0
+\end{align*}
+Mit den bekannten zwei Lösungen $x = 3$ und $x = 11$:
+\begin{align*}
+(x^{3} - 25x^{2} + 187x - 363)&:((x-3)(x-11)) \\
+= (x^{2} - 22x + 121)&:(x-11) \\
+= x-11
+\end{align*}
+
+Wir haben also wieder $x = 11$ herausbekommen. Also $R = (11, f(11)) = (11, 32)$ also $P \ast 3P = 3P$.
+Und $P + 3P = 0 \ast 3P = (11, -(-32)) = (11, 32) = 4P$.
+
+Nun ist die Verbindungslinie zwischen $4P$ und $3P$ parallel zur $y$-Achse, also $4P \ast 3P = 0$ und damit
+\begin{align}
+4P + 3P = 0 \ast (4P \ast 3P) = 0 \ast 0 = 0 \\
+\Rightarrow 7P = 4P + 3P = 0 \\
+\Rightarrow \mathrm{ord}_{E_{0}} P = 7
+\end{align}
+
+Die Ordnung vom Punkt $P = (3, 8)$ beträgt $7$.
 
 \end{enumerate}
 

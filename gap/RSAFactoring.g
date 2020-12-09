@@ -19,7 +19,7 @@ for j in [1..10] do
 	p := GcdInt( a^(2^(i)*t) - 1, n );
     if p <> n and p <> 1 then
 	  return p;
-	fi;
+    fi;
   od;
 od;
 end;
