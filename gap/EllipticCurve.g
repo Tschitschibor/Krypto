@@ -28,7 +28,7 @@ fi;
 
 
 
-ellipse := function( a4, a6, F )
+ellipticCurve := function( a4, a6, F )
   if not defines_ellipse( a4, a6, F ) then
     Error("Inputs don't define an elliptic curve.\n");
   fi;
