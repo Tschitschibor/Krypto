@@ -1,14 +1,181 @@
 Siehe \texttt{Krypto/gap/EllipticCurve.g}.
 
-Zunächst habe ich eine Funktion \texttt{defines_ellipse} geschrieben, die bei Eingabe von $a_{4}, a_{6}$ und dem Körper $F$ überprüft,
+Zunächst habe ich eine Funktion \texttt{defines\_ellipse} geschrieben, die bei Eingabe von $a_{4}, a_{6}$ und dem Körper $F$ überprüft,
 ob durch $E_{0}(a_{4}, a_,{6}, F)$ eine elliptische Kurve i.S.v. (2.3.10) definiert ist, wobei die Existenz des neutralen Elements ignoriert wird,
 also nur die Eigenschaften in (2.3.6) überprüft werden, d.h.
 \begin{align}
 F \,\text{ist ein Körper}\\
 \mathrm{Char}\,F \neq 2 \\
 \mathrm{Char}\,F \neq 3 \\
-4a_{4}^{3} + 27a_{6}^{2} \neq 0 
+4a_{4}^{3} + 27a_{6}^{2} \neq\label{istEllipse} 0 
 \end{align}
-wobei die letzte Gleichung über $K$ gesehen werden sollte.
+wobei die letzte Gleichung über $F$ gesehen werden sollte.
 
-Für die endlichen Körper benutze ich das Paket \texttt{GaussForHomalg} vom homalg_project (\url{https://github.com/homalg-project/homalg_project}).
+Für die endlichen Körper benutze ich das gap-Paket \texttt{GaussForHomalg} vom homalg\_project (\url{https://github.com/homalg-project/homalg\_project}).
+
+\begin{enumerate}[label=\alph*)]
+\item $a_{4} = -7, a_{6} = -6, F = \mathbb{Z}_{5}, P = (3, 0)$
+
+Zunächst betrachte ich die Zahlen als Elemente von $\mathbb{Z}_{5}$, d.h.
+\begin{alignat*}{4}
+a_{4} \mod 5 &= -7 &\mod 5 &= 3 \\
+a_{6} \mod 5 &= -6 &\mod 5 &= 4 \\
+P \mod 5 &= (3, 0) &\mod 5 &= (3, 0)
+\end{alignat*}
+
+In gap wird das durch Multiplizieren mit $1_{F}$ erledigt, d.h. \eqref{istEllipse} wird so überprüft:
+\[
+1_{F}*(4*a_{4}^{3} + 27*a_{6}^{2}) \neq 1_{F}*0
+\]
+
+Auch die Koeffizienten in \eqref{istEllipse} können wir über $\mathbb{Z}_{5}$ betrachten:
+\begin{align*}
+4 \mod 5 &= 4 \\
+27 \mod 5 &= 2
+\end{align*}
+
+Nun ist aber $4\cdot3^{3} + 2\cdot4^{2} \mod 5 = 140 \mod 5 = 0$, also gilt \eqref{istEllipse} nicht, d.h. mit
+$a_{4} = -7, a_{6} = -6, F = \mathbb{Z}_{5}$ handelt es sich nicht um eine Ellipse (was alle weiteren Rechnungen erübrigt).
+
+Das ergebnis liefert auch unsere Funktion \texttt{defines\_ellipse}:
+\begin{Verbatim}[commandchars=!@|,fontsize=\small,frame=single,label=Example]
+  !gapprompt@gap>| !gapinput@Z5 := HomalgRingOfIntegers( 5 );|
+  GF(5)
+  !gapprompt@gap>| !gapinput@defines_ellipse( -7, -6, Z5 );|
+  false
+\end{Verbatim}
+
+\item $a_{4} = -5, a_{6} = 5, F = \mathbb{Z}_{11}, P = (4, 7)$.
+
+Über $\mathbb{Z}_{11}$ ergibt das
+\begin{alignat*}{4}
+a_{4} \mod 11 &= -5 &\mod 11 &= 6 \\
+a_{6} \mod 11 &= 5 &\mod 11 &= 5 \\
+P \mod 11 &= (4, 7) &\mod 11 &= (4, 7)
+\end{alignat*}
+Ebenso die Koeffizienten
+\begin{align*}
+4 \mod 11 &= 4 \\
+27 \mod 11 &= 5
+\end{align*}
+
+Wir stellen fest, $\mathbb{Z}_{11}$ ist ein Körper, nicht von Charakteristik $2$ oder $3$. Bleibt also \eqref{istEllipse} zu überprüfen:
+\begin{align*}
+4\cdot 6^{3} + 5\cdot 5^{2} \mod 11 = 989 \mod 11 = 10 \neq 0 \mod 11.
+\end{align*}
+
+Das ergebnis liefert auch unsere Funktion \texttt{defines\_ellipse}:
+\begin{Verbatim}[commandchars=!@|,fontsize=\small,frame=single,label=Example]
+  !gapprompt@gap>| !gapinput@Z11 := HomalgRingOfIntegers( 11 );|
+  GF(11)
+  !gapprompt@gap>| !gapinput@defines_ellipse( -5, 5, Z11 );|
+  true
+\end{Verbatim}
+
+Nun haben wir also eine elliptische Kurve $E_{0}(-5, 5, \mathbb{Z}_{11})$ und wollen die Anzahl der Elemente bestimmen.
+Da sie als $x$-$y$-Graph eine Teilmenge der Zahlenebene $\mathbb{Z}_{11}^{2}$ ist, brauchen wir also nur für endlich viele
+Punkte zu überprüfen, ob sie auf der elliptischen Kurve liegen. Dazu bestimmen wir zunächst die Gleichung der Kurve:
+\begin{align}
+y^2 =\label{Kurvengleichung} x^{3} + a_{4}x + a_{6},
+\end{align}
+also
+\begin{align*}
+y^{2} = x^{3} + 6x + 5
+\end{align*}
+
+Dazu habe ich eine Funktion \texttt{ellipse\_membership} geschrieben, die bei Eingabe eines Punktes $xy \in F^{2}$ und den
+Werten $a_{4}, a_{6}$ und $F$ ausgibt, ob $xy$ die Gleichung \eqref{Kurvengleichung} erfüllt.
+
+Diesen Filter kann ich nun auf die Zahlenebene $F^{2}$ anwenden, wenn $F$ endlich ist. Zusammen mit der Funktion \texttt{defines\_ellipse}
+habe ich dann die Funktion \texttt{ellipticCurve} geschrieben, die zuerst überprüft, ob es sich um eine ellipse handelt, dann ob der Körper
+endlich ist, und dann die Punkte auf der elliptischen Kurve als Teilmenge von $F^{2}$ ausgibt:
+
+\begin{Verbatim}[commandchars=!@|,fontsize=\small,frame=single,label=Example]
+  !gapprompt@gap>| !gapinput@E0 := ellipticCurve( -5, 5, Z11 );|
+  [ [ 0*Z(11), Z(11)^2 ], [ 0*Z(11), Z(11)^7 ], [ Z(11)^0, Z(11)^0 ],
+  [ Z(11)^0, Z(11)^5 ], [ Z(11), Z(11)^4 ], [ Z(11), Z(11)^9 ],
+  [ Z(11)^2, Z(11)^2 ], [ Z(11)^2, Z(11)^7 ], [ Z(11)^3, Z(11) ],
+  [ Z(11)^3, Z(11)^6 ], [ Z(11)^5, Z(11)^3 ], [ Z(11)^5, Z(11)^8 ],
+  [ Z(11)^7, Z(11)^2 ], [ Z(11)^7, Z(11)^7 ], [ Z(11)^9, Z(11) ],
+  [ Z(11)^9, Z(11)^6 ] ]
+  !gapprompt@gap>| !gapinput@Length( E0 );|
+  16
+\end{Verbatim}
+Wir dürfen aber auch nicht den Fernpunkt $O \in E_{0}$ vergessen, der das neutrale Element der Gruppe ist.
+Die Gruppe hat also insgesamt 17 Elemente.
+
+Damit können wir auf zwei Arten überprüfen, ob der Punkt $P = (4, 7)$ auf $E_{0}$ liegt:
+
+\begin{Verbatim}[commandchars=!@|,fontsize=\small,frame=single,label=Example]
+  !gapprompt@gap>| !gapinput@P := [ 4, 7 ];|
+  [ 4, 7 ]
+  !gapprompt@gap>| !gapinput@ellipse_membership( P, -5, 5, Z11 );|
+  true
+  !gapprompt@gap>| !gapinput@One( Z11 )*P in E0;|
+  true
+\end{Verbatim}
+
+\item $a_{4} = -43, a_{6} = 166, F = \mathbb{R}, P = (3, 8)$.
+
+Da $\mathbb{R}$ ein unendlicher Körper ist, gilt $\mathrm{Char}\,\mathbb{R} = 0$, und wir brauchen auch nicht in Restklassen zu rechnen.
+Es gilt also wieder nur die Gleichung \eqref{istEllipse} zu überprüfen, also
+\[
+4\cdot (-43)^{3} + 27\cdot 166^{2} = 425984 \neq 0
+\]
+Statt über $\mathbb{R}$ rechnen wir in gap über den berechenbaren Körper $\mathbb{Q}$, was am Ergebnis nichts ändert:
+
+\begin{Verbatim}[commandchars=!@|,fontsize=\small,frame=single,label=Example]
+  !gapprompt@gap>| !gapinput@QQ := HomalgFieldOfRationals();|
+  Q
+  !gapprompt@gap>| !gapinput@defines_ellipse( -43, 166, QQ );|
+  true
+\end{Verbatim}
+
+Da es sich bei $E_{0}( -43, 166, \mathbb{R}) \subset (\mathbb{R}^{2} \cup \{O\})$ um einen stetigen Graph handelt, ist die Gruppe
+unendlich groß.
+
+Um einen Punkt $P$ zu sich selbst zu addieren, also ihn zu verdoppeln in der Gruppen-Operation auf $E_{0}$ bildet man die Tangente an der
+elliptischen Kurve durch $P$. Wenn die Tangente parallel zur $y$-Achse verläuft, schneidet sie die elliptische Kurve in keinem weiteren Punkt.
+In diesem Fall gilt dann $P + P = O$ und die Ordnung von $P$ wäre zwei.
+
+Wie man am Graph der Kurve
+\begin{align*}
+y^2 = x^{3} - 43x + 166,
+\end{align*}
+sehen kann, ist der äußerst linke Punkt derjenige, an dem $y = 0$ gilt, dann gilt also
+\begin{align*}
+0 &= x^{3} - 43x + 166 \\
+\Rightarrow x &\cong -7.9865
+\end{align*}
+
+Wir müssen also die Tangente an $E_{0}$ im Punkt $P = (x, y)$ berechnen.
+
+Für unseren Punkt $P = (3, 8)$ hingegen gilt:
+\begin{align*}
+P + P = 
+\end{align*}
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

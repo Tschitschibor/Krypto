@@ -30,6 +30,42 @@
 \newtheorem{beispiel}[satz]{Beispiel}
 \newtheorem{berechnung}[satz]{Berechnung}
 
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+%% for gap prompts:
+\usepackage{fancyvrb}
+%%% Color
+\usepackage{xcolor}
+\usepackage{color}
+\definecolor{FireBrick}{rgb}{0.5812,0.0074,0.0083}
+\definecolor{RoyalBlue}{rgb}{0.0236,0.0894,0.6179}
+\definecolor{RoyalGreen}{rgb}{0.0236,0.6179,0.0894}
+\definecolor{RoyalRed}{rgb}{0.6179,0.0236,0.0894}
+\definecolor{LightBlue}{rgb}{0.8544,0.9511,1.0000}
+\definecolor{Black}{rgb}{0.0,0.0,0.0}
+
+\definecolor{linkColor}{rgb}{0.0,0.0,0.554}
+\definecolor{citeColor}{rgb}{0.0,0.0,0.554}
+\definecolor{fileColor}{rgb}{0.0,0.0,0.554}
+\definecolor{urlColor}{rgb}{0.0,0.0,0.554}
+\definecolor{promptColor}{rgb}{0.0,0.0,0.589}
+\definecolor{brkpromptColor}{rgb}{0.589,0.0,0.0}
+\definecolor{gapinputColor}{rgb}{0.589,0.0,0.0}
+\definecolor{gapoutputColor}{rgb}{0.0,0.0,0.0}
+
+%%  for a long time these were red and blue by default,
+%%  now black, but keep variables to overwrite
+\definecolor{FuncColor}{rgb}{0.0,0.0,0.0}
+%% strange name because of pdflatex bug:
+\definecolor{Chapter }{rgb}{0.0,0.0,0.0}
+\definecolor{DarkOlive}{rgb}{0.1047,0.2412,0.0064}
+
+%% command for ColorPrompt style examples
+\newcommand{\gapprompt}[1]{\color{promptColor}{\bfseries #1}}
+\newcommand{\gapbrkprompt}[1]{\color{brkpromptColor}{\bfseries #1}}
+\newcommand{\gapinput}[1]{\color{gapinputColor}{#1}}
+
 
 
 \begin{document}
@@ -52,63 +88,14 @@ Siehe \texttt{Krypto/gap/ElGamal.g}
 \subsection{Aufgabe 1}
 \subsection{Aufgabe 2}
 \input{Uebung6/Aufgabe2.tex}
-
 \subsection{Aufgabe 3}
+\input{Uebung6/Aufgabe3.tex}
 \subsection{Aufgabe 4}
 \input{Uebung6/Aufgabe4.tex}
 \subsection{Aufgabe 5}
-\begin{satz}[Lagrange]
-Sei $G$ eine endliche Gruppe und $U \leq G$ eine Untergruppe von $G$. Dann gilt:
-\begin{enumerate}
-\renewcommand{\labelenumi}{(\theenumi)}
-\item $\abs{U}$ teilt $\abs{G}$.
-\item $\abs{_U \backslash ^G} = \abs{^G/_U} = \frac{\abs{G}}{\abs{U}}$.
-\end{enumerate}
-\end{satz}
-\begin{proof}
-Weil $G$ endlich ist, ist $U$ eine endliche Untergruppe von $G$. Setze $\abs{U} := m \in \mathbb{Z}_{\geq1}$. Zu jedem $g \in G$ sei
-$gU := \{ gu : u \in U \}$ eine Linksnebenklasse von $U$.
-Dann ist die Abbildung
-\[
-g\cdot : U \rightarrow gU,\, u \mapsto gu
-\]
-eine Bijektion: Weil $g \in G$ invertierbar ist, definiert $g^{-1}$ die Abbildung
-\[
-g^{-1}\cdot : gU \rightarrow U,\, gu \mapsto g^{-1}gu = u
-\]
-und es gilt
-\[
-g\cdot ( g^{-1}\cdot( gu ) ) = g\cdot ( u ) = gu
-\]
-sowie
-\[
-g^{-1}\cdot( g\cdot( u ) ) = g^{-1}\cdot( gu ) = u
-\]
-
-also $(g\cdot)\cdot(g^{-1}\cdot) = \mathrm{Id}_{gU}$ und $(g^{-1}\cdot)\cdot(g\cdot) = \mathrm{Id}_{U}$.
-Also ist $g\cdot$ bijektiv. Insbesondere gilt $\abs{gU} = \abs{U}$, weil $U$ endlich ist.
-Damit folgt $\abs{U} = \abs{gU} \forall g \in G$. 
-
-Es sei $^G/_U := \{ gU : g \in G \}$ die Menge der Linksnebenklassen von $U$.
-Für $g, h \in G$ untersuchen wir den Fall, dass $gU = hU$.
-Unter der Äquivalenzrelation
-\[
-g \sim h :\Leftrightarrow gU = hU
-\]
-betrachte die Menge $^G/_\sim := \{ [g]_\sim : g \in G \}$ mit $[g]_\sim := \{ h \in G | h \sim g \}$. Offensichtlich gilt $^G/_U \simeq \,^G/_\sim$.
-Im Fall $gU = hU$ gibt es also zu jedem $u_{1} \in U$ ein $u_{2} \in U$ sodass $gu_{1} = hu_{2}$, also $h^{-1}g = u_{1}^{-1}u_{2} \in U$. Damit
-stellen wir fest, dass
-\[
-g \sim h \Leftrightarrow gU = hU \Leftrightarrow h^{-1}g \in U \Leftrightarrow g^{-1}h \in U.
-\]
-
-
-Die Anzahl der Nebenklassen von $U$ ist also ein Vielfaches von $\abs{U}$, d.h. $\exists n \in \mathbb{Z}_{\geq1} : \abs{^G/_U} = n\cdot \abs{U} = n\cdot m$.
-
-\end{proof}
-
+\input{Uebung6/Aufgabe5.tex}
 \subsection{Aufgabe 6}
-\input{tex/Aufgabe6.tex}
+\input{Uebung6/Aufgabe6.tex}
 
 
 \end{document}
