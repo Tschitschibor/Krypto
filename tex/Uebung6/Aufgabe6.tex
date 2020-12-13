@@ -115,6 +115,86 @@ Damit können wir auf zwei Arten überprüfen, ob der Punkt $P = (4, 7)$ auf $E_
   true
 \end{Verbatim}
 
+In Anlehnung an das, was ich in Aufgabe 6.6. c) per Hand ausgerechnet habe, habe ich ein Programm \texttt{tangentSlope} geschrieben,
+das den Punkt $P$ sowie $a_{4}, a_{6}$ und $F$ übergeben bekommt, und dann die Steigung in $P$ an $E_{0}$ ausrechnet.
+
+\begin{Verbatim}[commandchars=!@|,fontsize=\small,frame=single,label=Example]
+  !gapprompt@gap>| !gapinput@tangentSlope( P, -5, 5, Z11 );|
+  Z(11)^7
+  !gapprompt@gap>| !gapinput@7*One( Z11 );|
+  Z(11)^7
+\end{Verbatim}
+
+Mit Punkt $P$ auf der Geraden und der Steigung $a := \mathtt{tangentSlope}( P, a_{4}, a_{6}, F )$ kann man leicht
+den $y$-Achsen-Abschnitt bestimmen:
+
+\begin{Verbatim}[commandchars=!@|,fontsize=\small,frame=single,label=Example]
+  !gapprompt@gap>| !gapinput@a := tangentSlope( [4, 7], a4, a6, Z11 );|
+  Z(11)^7
+  !gapprompt@gap>| !gapinput@lineYintersect( P, a, Z11 );|
+  Z(11)^0
+\end{Verbatim}
+
+Also ist die Tangente $t_{P}(x) = 7x + 1 \mod 11$.
+
+Nun müssen wir beide Funktionen gleichsetzen und danach die doppelte Nullstelle $x = P_{x} = 4$ dividieren.
+Wir bekommen also eine Funktion, der die beiden bekannten $x$-Werte $x_{1} = P_{x}, x_{2} = Q_{x}$ (im allgemeinen
+Fall, wenn es kein doppelter Schnittpunkt war) und die Koeffizienten $a, b$ für die Gerade und $a_{4}, a_{6}$ für die elliptische Kurve sowie der
+Körper $F$ übergeben werden, und die daraus dann den dritten Schnittpunkt $R$ von Gerade und elliptischer Kurve zurückgibt.
+
+Dabei muss eine Polynomdivision durchgeführt werden.
+
+\begin{align*}
+L(P,Q,F): ax + b &= f(x) = \sqrt{x^{3} + a_{4}x + a_{6}} \\
+(ax + b)^{2} &= x^{3} + a_{4}x + a_{6} \\
+a^{2}x^{2} + 2abx + b^{2} &= x^{3} + a_{4}x + a_{6} \\
+x^{3} - a^{2}x^{2} + (a_{4} - 2ab)x + (a_{6} - b^{2}) &= 0
+\end{align*}
+
+Von diesem Polynom dritten Grades auf der linken Seite kennen wir schon die zwei Lösungen $x_{1}, x_{2}$ von oben. Wir können also
+beide Nullstellen heraus-dividieren, also in einem Schritt das Polynom $(x-x_{1})(x-x_{2}) = x^{2} - (x_{1}+x_{2})x + x_{1}x_{2}$:
+
+\begin{align*}
+(x^{3} - a^{2}x^{2} + (a_{4} - 2ab)x + (a_{6} - b^{2})) &: (x^{2} - (x_{1}+x_{2})x + x_{1}x_{2}) \\
+&= x + (x_{1} + x_{2} - a^{2})
+\end{align*}
+
+Es ergibt sich nämlich nach dem ersten Divisions-Schritt bei $x^{2}$ der Koeffizient $-a^{2} - (-(x_{1} + x_{2})) = (x_{1} + x_{2} - a^{2})$.
+Dass sich der Rest zu $0$ subtrahiert, führt auf die zwei Gleichungen für die $x^{1}$- und die $x^{0}$-Koeffizienten:
+
+\begin{align*}
+a_{4} - 2ab - x_{1}x_{2} + x_{1}^{2} + 2x_{1}x_{2} + x_{2}^{2} - a^{2}x_{1} - a^{2}x_{2} &= 0 \\
+a_{6} - b^{2} - x_{1}^{2}x_{2} - x_{1}x_{2}^{2} + a^{2}x_{1}x_{2} &= 0
+\end{align*}
+
+Einsetzen von $a$ und $b$ in Abhängigkeit von $x_{1}$ und $x_{2}$:
+
+\begin{align*}
+
+\end{align*}
+
+Wir haben dann also den dritten $x$-Wert $x + (x_{1} + x_{2} - a^{2}) = 0$, d.h. $x_{3} = a^{2} - x_{1} - x_{2}$.
+Anstatt diesen in die uneindeutige Ellipsen-Gleichung einzusetzen, setzen wir $x_{3}$ lieber in die Geradengleichung ein:
+
+\begin{align*}
+y_{3} &= ax_{3} + b \\
+&= a^{3} - ax_{1} - ax_{2} + b
+\end{align*}
+
+Damit haben wir also den dritten Punkt $R = (x_{3}, y_{3})$ und das Ergebnis (wenn die Gerade $y = ax + b$ durch die zwei Punkte $P, Q \in E_{0}$ geht),
+dass $R = P \ast Q$.
+
+Für die Berechnung der Gruppenoperation selbst müssen wir noch mit (2.3.11) berechnen:
+
+\begin{align*}
+P + Q &= 0 \ast (P \ast Q) \\
+&= 0 \ast R \\
+&= 0 \ast (x_{3}, y_{3}) \\
+&= (x_{3}, -y_{3})
+\end{align*}
+
+
+
 \item $a_{4} = -43, a_{6} = 166, F = \mathbb{R}, P = (3, 8)$.
 
 Da $\mathbb{R}$ ein unendlicher Körper ist, gilt $\mathrm{Char}\,\mathbb{R} = 0$, und wir brauchen auch nicht in Restklassen zu rechnen.
