@@ -32,10 +32,8 @@ repeat
   d := d/2;
   s := s+1;
 until d mod 2 = 1;
-
 # vector x:
 x := [];
-
 # repeated M-R tests for (1/4)^(k) 
 # failure probability.
 for i in [1..k] do
@@ -48,13 +46,11 @@ for i in [1..k] do
     # x[j] := x[j-1]^2 mod n;
 	x[j] := fex( x[j-1], 2, n );
   od;
-  
   ## Now the statement Miller-Rabin (MR):
   ## "x[1] = 1 or exists i in [1..s-1] such that
   ##  x[i] = n - 1"
   ## is always true for n prime, but only true with
   ## probability 1/4 for n not prime.
-  
   # P( n prime AND MR true ) = 1
   # P( n prime AND MR false ) = 0 <-- easy exclude
   # P( n not prime AND MR true ) = 1/4 <-- LYER
@@ -95,10 +91,8 @@ repeat
   d := d/2;
   s := s+1;
 until d mod 2 = 1;
-
 # vector x:
 x := [];
-
 # repeated M-R tests for (1/4)^(k) 
 # failure probability.
 for i in [1..k] do
@@ -110,13 +104,11 @@ for i in [1..k] do
     # x[j] := x[j-1]^2 mod n;
 	x[j] := fex( x[j-1], 2, n );
   od;
-  
   ## Now the statement Miller-Rabin (MR):
   ## "x[1] = 1 or exists i in [1..s-1] such that
   ##  x[i] = n - 1"
   ## is always true for n prime, but only true with
   ## probability 1/4 for n not prime.
-  
   # P( n prime AND MR true ) = 1
   # P( n prime AND MR false ) = 0 <-- easy exclude
   # P( n not prime AND MR true ) = 1/4 <-- LYER
@@ -133,7 +125,6 @@ od;
 ## if not, this n is bad, try new number.
 until MR;
 ## found an n that has passed all k MR tests.
-
 return n; # n is prime with probability (3/4)^(k)
 end;
 
@@ -142,8 +133,7 @@ MRG := function( low, high, k )
 end;
 
 
-
-ElGamal := function( n )
+ElGamalZp := function( n )
 local p, a, k, z, key,
 f, q, m;
 
@@ -188,3 +178,5 @@ key.public := [ p, a, z ];
 
 return key;
 end;
+
+
