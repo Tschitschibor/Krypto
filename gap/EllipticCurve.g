@@ -1,5 +1,12 @@
 LoadPackage( "GaussForHomalg" );
-LoadPackage( "CatReps" );
+
+FloorHalfInt := function( n );
+  if n mod 2 = 0 then
+    return n / 2;
+  else
+    return (n-1)/2;
+  fi;
+end;
 
 # Fast Exponentiation (2.1.16)
 # (to be used in place of gap's internal a^n mod m routine)
@@ -14,7 +21,8 @@ fex := function( a, n, m )
       p0 := p0*a0 mod m;
     fi;
     a0 := a0*a0 mod m;
-    n0 := Int( Floor( Float( n0/2) ) );
+    # n0 := Int( Floor( Float( n0/2) ) );
+	n0 := FloorHalfInt( n0 );
   od;
   return p0;
 end;
@@ -173,14 +181,14 @@ return key;
 end;
 
 ### Elliptic curve stuff
-defines_ellipse := function( a4, a6, F )
+defines_ellipse := function( a4, a6, F, p )
   return IsField( F ) and
     Characteristic( F ) <> 2 and
     Characteristic( F ) <> 3 and
 	One( F )*(4*a4^3 + 27*a6^2) <> One( F )*0;
 end;
 
-ellipse_membership := function( P, a4, a6, F )
+ellipse_membership := function( P, a4, a6, F, p )
   local Px, Py;
   if IsZero( P ) then
     return true;
@@ -190,9 +198,9 @@ ellipse_membership := function( P, a4, a6, F )
   return One(F)*(Py^2) = One(F)*(Px^3 + a4*Px + a6);
 end;
 
-Ellipse := function( a4, a6, F )
+Ellipse := function( a4, a6, F, p )
   local El, IsFinite;
-  if not defines_ellipse( a4, a6, F ) then
+  if not defines_ellipse( a4, a6, F, p ) then
     Error("Inputs don't define an elliptic curve.\n");
   else
     if IsFFE( One(F) ) then
@@ -217,49 +225,81 @@ Ellipse := function( a4, a6, F )
   fi;
 end;
 
-EllipsePoint := function( P, a4, a6, F )
+EllipsePoint := function( P, a4, a6, F, p )
   local eP;
-  if not ellipse_membership( P, a4, a6, F ) then
+  if not ellipse_membership( P, a4, a6, F, p ) then
     Error( "Point P = ",P," does not lie on elliptic curve\n");
   else
     eP := rec();
-	eP.ellipse := Ellipse( a4, a6, F );
+	eP.ellipse := Ellipse( a4, a6, F, p );
 	eP.x := One(eP.ellipse.field)*eP.Px;
 	eP.y := One(eP.ellipse.field)*eP.Py;
     return eP;
   fi;
 end;
 
-EP := function( P, a4, a6, F )
-  return EllipsePoint( P, a4, a6, F );
+EP := function( P, a4, a6, F, p )
+  return EllipsePoint( P, a4, a6, F, p );
 end;
 
-NeutralElement := function( a4, a6, F )
+NeutralElement := function( a4, a6, F, p )
   return 0;
 end;
 
-ellipticCurve := function( a4, a6, F )
-  if not defines_ellipse( a4, a6, F ) then
+PointOnEllipticCurve := function( a4, a6, F, p )
+  local Px, Pysq, Py, P;
+  # statt
+  # One(F)*(Py^2) = One(F)*(Px^3 + a4*Px + a6);
+  # mit quadratischer reziprozitaet:
+  # Zufälliges Px in F
+  # Berechne Pysq := Px^3 + a4*Px + a6
+  # Prüfe ob das quadratischer Rest mod p sein kann
+  # Falls nein, neues Px
+  # Falls ja (und p mod 4 = 3), ist
+  # Py = Pysq^(1/2)
+  # = +/- Pysq^( (p-1)/4 ) mod p;
+  #
+  repeat
+    Px := Int( Random( F ) );
+    Pysq := Int( One(F)*(fex( Px, 3, p ) + a4*Px + a6) );
+  until Legendre( Pysq, p ) = 1;
+  # Pysq is a square mod p
+  Py := fex( Pysq, Int((p+1)/4), p );
+  # Py := RootMod( Pysq, p );
+  P := [ One(F)*Px, One(F)*Py ];
+  if not ellipse_membership( P, a4, a6, F, p ) then
+    Error("Point does not lie on curve.\n");
+  fi;
+  #Error();
+  return P;
+end;
+
+ellipticCurve := function( a4, a6, F, p )
+  if not defines_ellipse( a4, a6, F, p ) then
     Error("Inputs don't define an elliptic curve.\n");
   fi;
   if not IsFinite( F ) then
     Error("Infinite field can't be converted to list.\n");
   fi;
-  return Filtered( Union( 
-    Cartesian( AsList( F ), AsList( F ) ),
-    [ 0 ] ),	
-    xy -> ellipse_membership( xy, a4, a6, F ) );
+##  lol, waaay too slow:
+##  return Filtered( Union( 
+##    Cartesian( AsList( F ), AsList( F ) ),
+##    [ 0 ] ),	
+##    xy -> ellipse_membership( xy, a4, a6, F, p ) );
+# most times we don't even want to calculate the whole
+# elliptic curve. A point on the curve with a 
+# high-enough order is enough.
 end;
 
-ast := function( P, Q, a4, a6, F )
+ast := function( P, Q, a4, a6, F, p )
   local Px, Qx, Py, Qy, a, Rx, Ry, R;
-  if not defines_ellipse( a4, a6, F ) then
+  if not defines_ellipse( a4, a6, F, p ) then
     Error("Inputs don't define an elliptic curve.\n");
   fi;
-  if not ellipse_membership( P, a4, a6, F ) then
+  if not ellipse_membership( P, a4, a6, F, p ) then
     Error("Point P = ",P," does not lie on elliptic curve\n");
   fi;
-  if not ellipse_membership( Q, a4, a6, F ) then
+  if not ellipse_membership( Q, a4, a6, F, p ) then
     Error("Point Q = ",Q," does not lie on elliptic curve\n");
   fi;
   if 0 in [ P, Q ] then
@@ -289,52 +329,60 @@ ast := function( P, Q, a4, a6, F )
   return R;
 end;
 
-mirroredPoint := function( P, F )
+plus := function( P, Q, a4, a6, F, p )
+  if P = 0 then
+    return Q;
+  elif Q = 0 then
+    return P;
+  else
+    return mirroredPoint( ast( P, Q, a4, a6, F, p ), F, p );
+  fi;
+end;
+
+double := function( P, a4, a6, F, p )
+  return plus( P, P, a4, a6, F, p );
+end;
+
+mirroredPoint := function( P, F, p )
   if IsZero( P ) then
     return P;
   fi;
   return [ One(F)*P[1], -One(F)*P[2] ];
 end;
 
-plus := function( P, Q, a4, a6, F )
-  if P = 0 then
-    return Q;
-  elif Q = 0 then
-    return P;
-  else
-    return mirroredPoint( ast( P, Q, a4, a6, F ), F );
-  fi;
-end;
-
-double := function( P, a4, a6, F )
-  return plus( P, P, a4, a6, F );
-end;
-
-ftimes := function( n, P, a4, a6, F )
+ftimes := function( n, P, a4, a6, F, p )
   local p0, n0, a0;
   p0 := 0;
   a0 := P;
   n0 := n;
   while n0 > 0 do
     if (n0 mod 2 = 1) then
-      p0 := plus(p0, a0, a4, a6, F);
+      p0 := plus(p0, a0, a4, a6, F, p );
     fi;
-    a0 := double( a0, a4, a6, F);
+    a0 := double( a0, a4, a6, F, p);
     n0 := Int( Floor( Float( n0/2 ) ) );
   od;
   return p0;
 end;
 
-times := function( n, P, a4, a6, F )
-  local j, nP;
-  nP := 0;
-  for j in [1 .. n ] do
-    nP := plus( nP, P );
-  od;
-  return nP;
+orderWithGivenGroupOrder := function( P, a4, a6, F, p, q )
+  local n, Q;
+  if P = 0 then
+    return 1;
+  fi;
+  if IsPrime( q ) then
+    return q;
+  else
+    for n in Factors( q ) do
+      Q := ftimes( n, P, a4, a6, F, p );
+      if Q = 0 then
+        return n;
+      fi;
+    od;
+  fi;
 end;
 
-order := function( P, a4, a6, F )
+order := function( P, a4, a6, F, p )
   local n, Q;
   if P = 0 then
     return 1;
@@ -342,7 +390,7 @@ order := function( P, a4, a6, F )
   n := 1;
   repeat
     n := n+1;
-    Q := ftimes( n, P, a4, a6, F );
+    Q := ftimes( n, P, a4, a6, F, p );
   until Q = 0;
   return n;
 end;
@@ -369,7 +417,7 @@ ChoosePrimes := function( F )
   return S;
 end;
 
-Schoof := function( a4, a6, F )
+Schoof := function( a4, a6, F, p )
   local q, S, l, t;
   if not IsFinite( F ) then
     return infinity;
@@ -396,6 +444,27 @@ Schoof := function( a4, a6, F )
 end;
 ###
 
+ElGamalECWithGivenEllipticCurve := function( a4, a6, p, q )
+  local F, Elli, k, P, n, Q, key;
+  F := HomalgRingOfIntegers( p );
+  ## assume that q = group order
+  ## find point P with order n | q.
+  # Assume q = ord Elli
+  if IsPrime( q ) then
+    n := q;
+  else
+    Error( "Can't calculate order of point P\n" );
+  fi;
+  P := PointOnEllipticCurve( a4, a6, F, p );
+  k := Random( 2, q-2 );
+  Q := ftimes( k, P, a4, a6, F, p );
+  key := rec();
+  key.public := [ Int(a4), Int(a6), p,
+    List( P, Int ), n, List( Q, Int ) ];
+  key.private := k;
+  return key;
+end;
+
 ElGamalEC := function( N )
   local key, p, F,
   F2, xy, a4, a6,
@@ -408,16 +477,14 @@ ElGamalEC := function( N )
     xy := Random( F2 );
 	a4 := xy[1];
 	a6 := xy[2];
-  until defines_ellipse( a4, a6, F );
-  Elli := Union( ellipticCurve( a4, a6, F ), [ 0 ] );
+  until defines_ellipse( a4, a6, F, p );
+  Elli := Union( ellipticCurve( a4, a6, F, p ), [ 0 ] );
   repeat
     P := Random( Elli );
-    n := order( P, a4, a6, F );
+    n := order( P, a4, a6, F, p );
   until n > 1;
-  repeat
-    k := Random( [1..n-1] );
-  until k > n/2;
-  Q := ftimes( k, P, a4, a6, F );
+  k := Random( [2..n-2] );
+  Q := ftimes( k, P, a4, a6, F, p );
   key := rec();
   key.public := [ Int(a4), Int(a6), F, P, n, Q ];
   key.private := k;
