@@ -66,9 +66,16 @@
 \newcommand{\gapbrkprompt}[1]{\color{brkpromptColor}{\bfseries #1}}
 \newcommand{\gapinput}[1]{\color{gapinputColor}{#1}}
 
-
+%%% For source code listings
+\usepackage{listings}[2013/08/05]
+\input{pfad.tex}
 
 \begin{document}
+
+
+	\pagenumbering{gobble}
+	\tableofcontents\label{toc}
+	\pagenumbering{arabic}
 
 \section{Übung 1}
 \section{Übung 2}
@@ -83,6 +90,7 @@
 \subsection{Aufgabe 4}
 \subsection{Aufgabe 5}
 \input{Uebung5/Aufgabe5.tex}
+
 \newpage
 \section{Übung 6}
 \subsection{Aufgabe 1}
@@ -97,5 +105,55 @@
 \subsection{Aufgabe 6}
 \input{Uebung6/Aufgabe6.tex}
 
+\newpage
+\section{Übung 7}
+\subsection{Aufgabe 1 und 2}
+% find a random point on the elliptic curve
+\lstinputlisting[
+		firstline=249,
+		lastline=275, 
+		breaklines=true,
+		label=func:PointOnEllipticCurve,
+		caption={$\mathtt{PointOnEllipticCurve}$},
+		language=GAP
+		]{\pkgpath/Krypto/gap/EllipticCurve.gi}
+		
+% ElGamalECWithGivenEllipticCurve
+\lstinputlisting[
+		firstline=447,
+		lastline=466, 
+		breaklines=true,
+		label=func:ElGamalECWithGivenEllipticCurve,
+		caption={$\mathtt{ElGamalECWithGivenEllipticCurve}$},
+		language=GAP
+		]{\pkgpath/Krypto/gap/EllipticCurve.gi}
+		
+% fast times operation on elliptic curve
+\lstinputlisting[
+		firstline=353,
+		lastline=366, 
+		breaklines=true,
+		label=func:ftimes,
+		caption={$\mathtt{ftimes}$},
+		language=GAP
+		]{\pkgpath/Krypto/gap/EllipticCurve.gi}
+		
+		
+\lstinputlisting[
+		firstline=1,
+		lastline=10, 
+		breaklines=true,
+		label=example:Blatt7A2,
+		caption={$\mathtt{Blatt 7 A 2}$},
+		language=GAP
+		]{\pkgpath/Krypto/examples/uebung7A2.g}
+
+
+\newpage
+\section{Übung 8}
+\subsection{Aufgabe 3}
+\input{Uebung8/Aufgabe3.tex}
+\subsection{Aufgabe 5}
+\input{Uebung8/Aufgabe5.tex}
 
 \end{document}

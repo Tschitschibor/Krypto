@@ -1,4 +1,4 @@
-Read( Concatenation(GAPInfo.RootPaths[1],"pkg/Krypto/gap/EllipticCurve.g"));
+Read( Concatenation(GAPInfo.RootPaths[1],"pkg/Krypto/gap/EllipticCurve.gi"));
 
 a4 := 3;
 a6 := 9;
@@ -10,7 +10,7 @@ k := 7;
 
 C := [ 10, 7 ];
 D := [ 3, 10 ];
-mirroredPoint;;
 S := mirroredPoint( C, F, p );
 M := plus( D, ftimes( k, S, a4, a6, F, p ), a4, a6, F, p );
 Print( List( M, Int ) );
+#! [ 10, 4 ]

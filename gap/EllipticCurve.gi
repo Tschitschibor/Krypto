@@ -206,7 +206,7 @@ Ellipse := function( a4, a6, F, p )
     if IsFFE( One(F) ) then
 	  IsFinite := "finite ";
 	else
-	  IsFinite := "";
+	  IsFinite := " ";
 	fi;
     El := rec();
 	El.description := Concatenation(
@@ -251,13 +251,14 @@ PointOnEllipticCurve := function( a4, a6, F, p )
   # statt
   # One(F)*(Py^2) = One(F)*(Px^3 + a4*Px + a6);
   # mit quadratischer reziprozitaet:
-  # Zufälliges Px in F
+  # Random Px in F
   # Berechne Pysq := Px^3 + a4*Px + a6
-  # Prüfe ob das quadratischer Rest mod p sein kann
+  # Check ob Pysq quadratischer Rest mod p sein kann
+  # Dies liefert die Legendre-Funktion
   # Falls nein, neues Px
   # Falls ja (und p mod 4 = 3), ist
   # Py = Pysq^(1/2)
-  # = +/- Pysq^( (p-1)/4 ) mod p;
+  # = +/- Pysq^( (p+1)/4 ) mod p;
   #
   repeat
     Px := Int( Random( F ) );
@@ -270,7 +271,6 @@ PointOnEllipticCurve := function( a4, a6, F, p )
   if not ellipse_membership( P, a4, a6, F, p ) then
     Error("Point does not lie on curve.\n");
   fi;
-  #Error();
   return P;
 end;
 
@@ -329,6 +329,13 @@ ast := function( P, Q, a4, a6, F, p )
   return R;
 end;
 
+mirroredPoint := function( P, F, p )
+  if IsZero( P ) then
+    return P;
+  fi;
+  return [ One(F)*P[1], -One(F)*P[2] ];
+end;
+
 plus := function( P, Q, a4, a6, F, p )
   if P = 0 then
     return Q;
@@ -341,13 +348,6 @@ end;
 
 double := function( P, a4, a6, F, p )
   return plus( P, P, a4, a6, F, p );
-end;
-
-mirroredPoint := function( P, F, p )
-  if IsZero( P ) then
-    return P;
-  fi;
-  return [ One(F)*P[1], -One(F)*P[2] ];
 end;
 
 ftimes := function( n, P, a4, a6, F, p )
@@ -445,11 +445,11 @@ end;
 ###
 
 ElGamalECWithGivenEllipticCurve := function( a4, a6, p, q )
-  local F, Elli, k, P, n, Q, key;
+  local F, k, P, n, Q, key;
   F := HomalgRingOfIntegers( p );
   ## assume that q = group order
   ## find point P with order n | q.
-  # Assume q = ord Elli
+  # Assume q = order of the elliptic curve
   if IsPrime( q ) then
     n := q;
   else
