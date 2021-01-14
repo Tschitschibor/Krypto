@@ -1,0 +1,17 @@
+Diffie-Hellman Key exchange:
+
+\begin{Verbatim}[commandchars=!@|,fontsize=\small,frame=single,label=Example]
+  !gapprompt@gap>| !gapinput@c := (2^400) mod 467;|
+  137
+  !gapprompt@gap>| !gapinput@d := (2^134) mod 467;|
+  84
+  !gapprompt@gap>| !gapinput@(c^134) mod 467;|
+  90
+  !gapprompt@gap>| !gapinput@(d^400) mod 467;|
+  90
+\end{Verbatim}
+
+Das gemeinsame Geheimnis ist
+\begin{align*}
+c^s &= (a^r \mathrm{mod}\, p)^s \mathrm{mod}\, p &= (a^s \mathrm{mod}\, p)^r \mathrm{mod}\, p &=  a^{rs} \mathrm{mod}\, p &= d^r
+\end{align*}

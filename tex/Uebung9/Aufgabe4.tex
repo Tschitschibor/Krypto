@@ -1,0 +1,35 @@
+(i) Längenpolynom $p(X) = X + 3X^{3} + 3X^{4}$:
+Summe der Koeffizienten ist $7$, d.h. wir wollen $7$ Zeichen abbilden, d.h. $\Sigma = \{0,1,2,3,4,5,6\}$.
+
+\begin{align*}
+0 &\rightarrow 0 \\
+1 &\rightarrow 1\Vtextvisiblespace[1em] \\
+2 &\rightarrow 1\Vtextvisiblespace[1em] \\
+3 &\rightarrow 1\Vtextvisiblespace[1em] \\
+4 &\rightarrow 1\vbox{\hrule width 1em}\Vtextvisiblespace[0.5em] \\
+5 &\rightarrow 1\vbox{\hrule width 1em}\Vtextvisiblespace[0.5em] \\
+6 &\rightarrow 1\vbox{\hrule width 1em}\Vtextvisiblespace[0.5em]
+\end{align*}
+
+Für $0$ wählt man $0$ als einzelnes Zeichen aus. Das legt das Anfangszeichen für $1,2,3,4,5,6$ schon auf $1$ fest.
+Für $1, 2, 3$ wählt man aus $00, 01, 10, 11$ drei Kombinationen $\Vtextvisiblespace[1em]$ aus, dann bleibt die vierte $\vbox{\hrule width 1em}$ übrig für
+$4, 5, 6$. Weil hiermit aber schon $3$ von $4$ Zeichen vergeben sind, kann man die drei Zeichen $4, 5, 6$ nur noch
+an dem letzten Bit $\Vtextvisiblespace[0.5em]$ unterscheiden $0$ oder $1$, was aber unmöglich ist.
+
+(ii) Längenpolynom $p(X) = 3X^{2} + 3X^{4} + X^{5}$:
+Summe der Koeffizienten ist $7$, d.h. wir wollen $7$ Zeichen abbilden, d.h. $\Sigma = \{0,1,2,3,4,5,6\}$.
+
+\begin{align*}
+0 &\rightarrow 00 \\
+1 &\rightarrow 01 \\
+2 &\rightarrow 10 \\
+3 &\rightarrow 1100 \\
+4 &\rightarrow 1101 \\
+5 &\rightarrow 1110 \\
+6 &\rightarrow 11110
+\end{align*}
+
+Hier funktioniert es, für $0, 1, 2$ aus $00, 01, 10, 11$ drei Kombinationen auszuwählen, und die letzte $11$ für $3, 4, 5, 6$
+zu lassen. Das iteriert man, und an das letzte Zeichen setzt man noch eine $0$ an, was aber unnötig ist, da sich $1110$ und $1111$
+sowieso schon an der letzten Stelle unterscheiden. Der Kode mit diesem Längenpolynom ist also nicht optimal, da sich
+(unabhängig von der Verteilung) ein kürzerer Kode finden lässt, indem man die $0$ bei der $6$ weglässt.

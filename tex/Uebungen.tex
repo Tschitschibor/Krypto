@@ -70,6 +70,22 @@
 \usepackage{listings}[2013/08/05]
 \input{pfad.tex}
 
+%% For visible white space
+\newcommand\Vtextvisiblespace[1][.3em]{%
+  \mbox{\kern.06em\vrule height.3ex}%
+  \vbox{\hrule width#1}%
+  \hbox{\vrule height.3ex}}
+
+%% For tikz plots
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16,width=10cm}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{calc}
+\pgfplotsset{my style/.append style={axis x line=middle, axis y line=
+middle, xlabel={$p_{0}$}, ylabel={$p_{1}$}, axis equal }}
+
+
+
 \begin{document}
 
 
@@ -151,9 +167,18 @@
 
 \newpage
 \section{Übung 8}
+\subsection{Aufgabe 1}
+\input{Uebung8/Aufgabe1.tex}
 \subsection{Aufgabe 3}
 \input{Uebung8/Aufgabe3.tex}
 \subsection{Aufgabe 5}
 \input{Uebung8/Aufgabe5.tex}
+
+\newpage
+\section{Übung 9}
+\subsection{Aufgabe 4}
+\input{Uebung9/Aufgabe4.tex}
+\subsection{Aufgabe 5}
+\input{Uebung9/Aufgabe5.tex}
 
 \end{document}
