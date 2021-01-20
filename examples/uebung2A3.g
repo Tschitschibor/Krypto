@@ -1,5 +1,5 @@
 Read( Concatenation( GAPInfo.RootPaths[1],
-  "pkg/Krypto/gap/AffineChiffre.g" ) );
+  "pkg/Krypto/gap/AffineChiffre.gi" ) );
 
 r := 256;
 

@@ -1,0 +1,106 @@
+\[ \Sigma = \{1,2,3\} \]
+\[
+p_{1} = \frac{1}{16}, p_{2} = \frac{7}{8}, p_{3} = \frac{1}{16}
+\]
+\[
+q_{1} = 0, q_{2} = \frac{1}{16}, q_{3} = \frac{15}{16}
+\]
+
+a)
+
+$g(222222)$:
+
+\[
+\begin{array}{c|c|l|l}
+k & i_{k} & z_{k} & w_{k} \\
+\hline
+6 & 2 & q_{2} = \frac{1}{16} & p_{2} = \frac{7}{8} \\
+5 & 2 & q_{2} + p_{2}z_{6} = \frac{1}{16}\cdot(1 + \frac{7}{8}) & p_{2}^{2} = \left(\frac{7}{8}\right)^{2} \\
+& & = \frac{1}{16}\cdot\frac{15}{8} = \frac{15}{128} & \\
+4 & 2 & q_{2} + p_{2}z_{5} = \frac{1}{16}(1 + \frac{7}{8}\cdot\frac{15}{8} ) & p_{2}^{3} = \left(\frac{7}{8}\right)^{3} \\
+& & = \frac{1}{16}\cdot\frac{169}{64} = \frac{169}{1024} & \\
+3 & 2 & q_{2} + p_{2}z_{4} = \frac{1}{16}(1 + \frac{169}{64} ) & p_{2}^{4} = \left(\frac{7}{8}\right)^{4} \\
+& & = \frac{1}{16}\cdot\frac{1695}{512} = \frac{1695}{8192} & \\
+2 & 2 & q_{2} + p_{2}z_{3} = \frac{1}{16}(1 + \frac{1695}{512} ) & p_{2}^{5} = \left(\frac{7}{8}\right)^{5} \\
+& & = \frac{1}{16}\cdot\frac{15961}{4096} = \frac{15961}{65536} & \\
+1 & 2 & q_{2} + p_{2}z_{2} = \frac{1}{16}(1 + \frac{15961}{4096} ) & p_{2}^{6} = \left(\frac{7}{8}\right)^{6} \\
+& & = \frac{1}{16}\cdot\frac{144495}{32768} = \frac{144495}{524288} & \\
+\end{array}
+\]
+
+\begin{align*}
+T = z_{1} + \frac{1}{2} w_{1} &= 2^{-19}\cdot 144495 + 2^{-19}\cdot7^{6} \\
+&= 262144\cdot2^{-19} = (\frac{1}{2}\cdot 524288)\cdot2^{-19} \\
+&= 2^{19-1}\cdot2^{-19} = 2^{-1} = \frac{1}{2} = (0.100)_{2}
+\end{align*}
+was ja auch nicht verwunderlich ist, wenn man bedenkt, dass die Mitte vom zweiten Intervall $[\frac{1}{16}, \frac{15}{16}]$ genau $\frac{1}{2}$ ist,
+und wir jedes mal das zweite Intervall gewählt haben. Wir schreiben $T = \frac{1}{2}$ als Binärzahl $(0.100)_{2}$ mit drei Stellen, weil für
+$\nu \in \mathbb{N}$ gilt:
+\begin{align*}
+1 - \log_{2} w_{1} &\leq \nu < 2 - \log_{2} w_{1} \\
+\log_{2} \left(\frac{7}{8}\right)^{6} &= 6(\log_{2}7 - \log_{2}8) \\
+&= 6(\log_{2} 7 - 3) = 6\log_{2}7 - 18 \\
+&\simeq -1.15587 \\
+\Rightarrow 1 - \log_{2} w_{1} \simeq 2.15587 \leq \nu \leq 3.15587 \simeq 2 - \log_{2} w_{1} \\
+\Rightarrow \nu = 3
+\end{align*}
+
+Also $g(222222) = 100$.
+
+\newpage
+$g(223212)$:
+
+\[
+\begin{array}{c|c|l|l}
+k & i_{k} & z_{k} & w_{k} \\
+\hline
+6 & 2 & 0.0625 & 0.875 \\
+5 & 1 & 0.00390625 & 0.0546875 \\
+4 & 2 & 0.06591796875 & 0.0478515625 \\
+3 & 3 & 0.941619873046875 & 0.00299072265625 \\
+2 & 2 & 0.886417388916015625 & 0.00261688232421875 \\
+1 & 2 & 0.1179010868072509765625 & 0.00228977203369140625 \\
+\end{array}
+\]
+
+\[ 1 - \log_{2} w_{1} \simeq 9.77 \leq \nu < 10 \]
+\[ \nu = 9 \]
+
+\begin{align*}
+T =\, &0.1179010868072509765625 \\
++\, &0.0011448860168457031250 \\
+=\, &0.1190459728240966796875
+\end{align*}
+
+$T = (0.\underbracket{000111100}11110011111)_{2}$ Also
+
+$g(223212) = 000111100$.
+
+b)
+
+Finde $k \in \mathbb{N}$ und $x_{1},\dots,x_{k} \in \Sigma$ mit $g(x_{1}\dots x_{k}) = 000101110100$.
+
+Die Zahl $u_{1} := (0.000101110100)_{2} = \frac{93}{1024}$, und es gilt
+\begin{alignat*}{3}
+\frac{1}{16} \leq u_{1} &= \frac{93}{1024}&< \frac{15}{16} \rightarrow i_{1}' = 2 \\
+u_{2} &= \frac{29}{896} &< \frac{1}{16} \rightarrow i_{2}' = 1 \\
+u_{3} &= \frac{29}{59} &< \frac{15}{16} \rightarrow i_{3}' = 2 \\
+u_{4} &= \frac{51}{98} &< \frac{15}{16} \rightarrow i_{4}' = 2 \\
+u_{5} &= \frac{359}{686} &< \frac{15}{16} \rightarrow i_{5}' = 2 \\
+u_{6} &= \frac{2529}{4802} &< \frac{15}{16} \rightarrow i_{6}' = 2
+\end{alignat*}
+
+Wir haben die Codelänge $n=6$ erreicht, und der ursprüngliche Code lautet $[212222]$.
+
+
+
+
+
+
+
+
+
+
+
+
+
